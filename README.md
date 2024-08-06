@@ -44,6 +44,7 @@ test -DsuiteXmlFile=./src/test/java/org/evershop/resources/challengeTests.xml -f
 3. Open the test.
 4. Locate over the class name, then right click.
 5. Click on "Run CheckoutOrderTest".
+
    <img width="559" alt="Screenshot 2024-08-06 at 12 21 18 AM" src="https://github.com/user-attachments/assets/45e31029-d0df-4ecc-bcd1-041ad3def8e9">
 
 
