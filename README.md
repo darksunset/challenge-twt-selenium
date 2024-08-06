@@ -33,7 +33,9 @@ git clone https://github.com/darksunset/challenge-twt-selenium.git
 ```
 test -DsuiteXmlFile=./src/test/java/org/evershop/resources/challengeTests.xml -f pom.xml
 ```
-<img width="476" alt="Screenshot 2024-08-06 at 12 46 47 AM" src="https://github.com/user-attachments/assets/8884616a-d6b8-432c-b9d8-4db6edf821f9">
+
+  <img width="476" alt="Screenshot 2024-08-06 at 12 46 47 AM" src="https://github.com/user-attachments/assets/8884616a-d6b8-432c-b9d8-4db6edf821f9">
+
 2. Run the configuration
 
 ### Second way
