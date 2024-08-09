@@ -4,6 +4,7 @@
     <test name="tasks">
         <classes>
             <class name="org.evershop.test.generateOrder.CheckoutOrderTest"/>
+            <class name="api.restcountries.test.CountryTests"/>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->
