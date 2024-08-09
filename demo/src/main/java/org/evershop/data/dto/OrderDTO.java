@@ -1,5 +1,6 @@
 package org.evershop.data.dto;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,10 @@ public class OrderDTO {
         }
         sum+=this.deliveryCharge;
         sum-=this.discount;
-        this.grandTotal = sum;
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String roundedFloat = df.format(sum);
+        this.grandTotal = Float.valueOf(roundedFloat);
     }
     private void calculateSubtotals() {
         for (OrderProductDTO orderProductDTO : this.productList) {

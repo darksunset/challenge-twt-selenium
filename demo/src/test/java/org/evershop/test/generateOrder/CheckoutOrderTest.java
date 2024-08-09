@@ -10,6 +10,7 @@ import org.evershop.pages.order.ShoppingCartPage;
 import org.evershop.pages.product.ProductDetailPage;
 import org.evershop.test.BaseTest;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -26,7 +27,12 @@ public class CheckoutOrderTest extends BaseTest {
     private ProductListingPage productListingPage;
     private ProductDetailPage productDetailPage;
     private ShoppingCartPage shoppingCartPage;
-    private LoginDTO newUser = LoginDTO.createUserDTO();
+    private LoginDTO newUser;
+
+    @BeforeClass
+    public void setupUserData(){
+        this.newUser = LoginDTO.createUserDTO();
+    }
 
     @BeforeTest
     public void setupPages() {
@@ -34,20 +40,21 @@ public class CheckoutOrderTest extends BaseTest {
         this.loginPage = new Login(driver);
         this.createAccountPage = new CreateAccountPage(driver);
         this.myAccountPage = new MyAccountPage(driver);
-
-
         this.productListingPage = new ProductListingPage(driver);
         this.productDetailPage = new ProductDetailPage(driver);
         this.shoppingCartPage = new ShoppingCartPage(driver);
-
     }
 
     @DataProvider(name = "orderDataProvider")
     protected Object[][] generateOrder() {
         // Order Data
         List<OrderProductDTO> orderProductDTOList = new ArrayList<>();
-        orderProductDTOList.add(OrderProductDTO.createOrderProduct(1, ProductDTO.createProductDTO("Coated glitter chuck taylor all star", "Purple", "M", "Kid")));
-        orderProductDTOList.add(OrderProductDTO.createOrderProduct(1, ProductDTO.createProductDTO("Nike court vision low", "White", "X", "Women")));
+        orderProductDTOList.add(OrderProductDTO
+                .createOrderProduct(1, ProductDTO
+                        .createProductDTO("Coated glitter chuck taylor all star", "Purple", "M", "Kid")));
+        orderProductDTOList.add(OrderProductDTO
+                .createOrderProduct(2, ProductDTO
+                        .createProductDTO("Nike court vision low", "White", "X", "Women")));
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setPaymentMethod("Credit Card");
         orderDTO.setShippingAddress(AddressDTO.createAddressDTO());
@@ -66,14 +73,15 @@ public class CheckoutOrderTest extends BaseTest {
         landingPage.getTopBar().clickUserIcon();
         Assert.assertTrue(loginPage.isDisplayed());
         loginPage.clickCreateAnAccount();
-        createAccountPage.getNewAccount().fillForm(newUser.getFullName(), newUser.getEmail(), newUser.getPassword());
+        createAccountPage.getNewAccount()
+                .fillForm(this.newUser.getFullName(), this.newUser.getEmail(), this.newUser.getPassword());
         createAccountPage.getNewAccount().clickSignUp();
         Assert.assertTrue(landingPage.getHomeBanner().isDisplayed());
 
         landingPage.getTopBar().clickUserIcon();
         Assert.assertTrue(myAccountPage.getAccountDetails().isDisplayed());
-        Assert.assertEquals(myAccountPage.getAccountDetails().getFullName(), newUser.getFullName());
-        Assert.assertEquals(myAccountPage.getAccountDetails().getEmail(), newUser.getEmail());
+        Assert.assertEquals(myAccountPage.getAccountDetails().getFullName(), this.newUser.getFullName());
+        Assert.assertEquals(myAccountPage.getAccountDetails().getEmail(), this.newUser.getEmail());
         myAccountPage.getAccountDetails().clickLogout();
     }
 
@@ -82,7 +90,7 @@ public class CheckoutOrderTest extends BaseTest {
         landingPage.goTo();
         landingPage.getTopBar().clickUserIcon();
 
-        loginPage.login(newUser.getEmail(), newUser.getPassword());
+        loginPage.login(this.newUser.getEmail(), this.newUser.getPassword());
         Assert.assertTrue(landingPage.getHomeBanner().isDisplayed());
 
 
@@ -114,8 +122,9 @@ public class CheckoutOrderTest extends BaseTest {
         shoppingCartPage.getShipmentAddress().typeTelephone(orderDTO.getShippingAddress().getPhone());
         shoppingCartPage.getShipmentAddress().typeAddress(orderDTO.getShippingAddress().getAddress1());
         shoppingCartPage.getShipmentAddress().selectShipmentMethod(orderDTO.getShippingMethod());
-        // Gather delivery charge and calculate tt
-        orderDTO.setDeliveryCharge(shoppingCartPage.getShipmentAddress().getShipmentMethodAmount(orderDTO.getShippingMethod()));
+        // Gather delivery charge and calculate grand total
+        orderDTO.setDeliveryCharge(shoppingCartPage
+                .getShipmentAddress().getShipmentMethodAmount(orderDTO.getShippingMethod()));
         shoppingCartPage.getShipmentAddress().clickContinueToPaymentButton();
 
         Assert.assertTrue(shoppingCartPage.getPaymentMethod().isDisplayed());

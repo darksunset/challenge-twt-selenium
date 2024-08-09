@@ -35,7 +35,9 @@ public class CreditCardPayment extends AbstractComponent {
 
     @Override
     public boolean isDisplayed() {
-        return this.wait.until(ExpectedConditions.elementToBeClickable(this.testSuccessButton)).isDisplayed();
+        return this.wait.until(ExpectedConditions.elementToBeClickable(this.testSuccessButton)).isDisplayed()
+                && this.wait.until(ExpectedConditions.elementToBeClickable(this.testFailureButton)).isDisplayed()
+                && this.wait.until(ExpectedConditions.elementToBeClickable(this.placeOrderButton)).isDisplayed();
     }
 
     public void fillCreditCardWithTestData(){
